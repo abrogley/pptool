@@ -3,7 +3,7 @@ execfile("src/airports.py")
 # Simple tests
 myList = AirportList()
 
-myCity = myList.findByName('Butwal')
+myCity = myList.findByName('Houston')
 print "My city's name is " + myCity.getCityName() + \
       " and it is located at " + str(myCity.getLocX()) + \
       " in X and " + str(myCity.getLocY()) + " in Y "
@@ -19,8 +19,12 @@ print "The cost between Boston and Orlando is " + \
       str(int(myList.costBetween('Boston','Orlando')))
 
 radius = 500
-withinRangeFromHouston = myList.findAirportsWithinRange(myCity.getCityName(), radius)
+withinRangeFromMyCity = myList.findAirportsWithinRange(myCity.getCityName(), radius)
+withinRangeFromMyCityAndClass2 = myList.findAirportsWithinRange(myCity.getCityName(), radius, 2)
 print "There are some cities close to me. The ones within " + str(radius) + \
       " distance are:"
-for city in withinRangeFromHouston :
+for city in withinRangeFromMyCity :
+    print "    " + city.getCityName()
+print "The ones that are class 2 or greater are:"
+for city in withinRangeFromMyCityAndClass2 :
     print "    " + city.getCityName()

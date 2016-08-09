@@ -321,6 +321,9 @@ class AirportList(object):
                 continue
             
             if (self.distanceBetween(airportName, candidateAirport.getCityName()) < rangeDistance) :
-                subsetWithinRange.append(candidateAirport)
+                if candidateAirport.getClass() < minClass :
+                    continue
+                else :
+                    subsetWithinRange.append(candidateAirport)
                 
         return subsetWithinRange
