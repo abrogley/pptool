@@ -1,4 +1,4 @@
-class AirportList(object):
+class AirportManager(object):
     "class with many operations available for the list of airports"
     def __init__(self, inputList):
         self.baseFare             = 50
@@ -103,7 +103,7 @@ class AirportList(object):
     A minimum class may be specified
     A maximum range may be specified
     """
-    def findBestMidpointAirport(self, firstLoc, secondLoc, minClass=1, maxRange=100000, desiredType=str):        
+    def findBestTransferAirport(self, firstLoc, secondLoc, minClass=1, maxRange=100000, desiredType=str):        
         if type(firstLoc) is str :
             firstLoc = self.findByName(firstLoc)
         if type(firstLoc) is Airport :

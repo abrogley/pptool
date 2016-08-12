@@ -3,7 +3,7 @@ execfile("src/airports.py")
 
 # Simple tests
 airportDatabase = getAirportList()
-airports = AirportList(airportDatabase)
+airports = AirportManager(airportDatabase)
 
 myCity = airports.findByName('Houston')
 print "My city's name is " + myCity.getCityName() + \
@@ -33,9 +33,9 @@ nearestToMidpt3 = airports.findNearestAirport(midpt, 3, Airport)
 distFromMidpt1 = airports.getDistanceBetween(midpt, nearestToMidpt1)
 distFromMidpt2 = airports.getDistanceBetween(midpt, nearestToMidpt2)
 distFromMidpt3 = airports.getDistanceBetween(midpt, nearestToMidpt3)
-best1 = airports.findBestMidpointAirport(cityA, cityB, 1, 0.95*distAB, Airport)
-best2 = airports.findBestMidpointAirport(cityA, cityB, 2, 0.95*distAB, Airport)
-best3 = airports.findBestMidpointAirport(cityA, cityB, 3, 0.95*distAB, Airport)
+best1 = airports.findBestTransferAirport(cityA, cityB, 1, 0.99*distAB, Airport)
+best2 = airports.findBestTransferAirport(cityA, cityB, 2, 0.99*distAB, Airport)
+best3 = airports.findBestTransferAirport(cityA, cityB, 3, 0.99*distAB, Airport)
 print "The midpoint between " + cityA.getCityName() + " and " + cityB + \
       " is " + str(midpt) + ". The nearest airports of each class" + \
       " to this midpoint are :\n\t" + \
