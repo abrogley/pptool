@@ -99,7 +99,7 @@ class AirportManager(object):
         return subsetWithinRange
 
     """
-    This method finds the best transfer city between two other cities by minimizing total range traveled
+    This method finds the best transfer city between two other cities by minimizing total distance traveled
     A minimum class may be specified
     A maximum range may be specified
     """
@@ -127,6 +127,10 @@ class AirportManager(object):
                 if currentExtraRange < leastExtraRangeSoFar :
                     bestIndexSoFar = ii
                     leastExtraRangeSoFar = currentExtraRange
+
+        if bestIndexSoFar == -1 :
+            # This means no transfer city was found less than maxRange
+            return -1
 
         if desiredType == str :
             return self.airports[bestIndexSoFar].getCityName()

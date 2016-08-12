@@ -20,10 +20,23 @@ print "To get anywhere from my city, there is a base fare of " + \
 print "The distance between Detroit and Tokyo is " + \
       str(airports.getDistanceBetween('Detroit','Tokyo'))
 
+print "The cost between Boston and Orlando is " + \
+      str(int(airports.costBetween('Boston','Orlando')))
+
+radius = 500
+withinRangeFromMyCity = airports.findAirportsWithinRange(myCity.getCityName(), radius)
+withinRangeFromMyCityAndClass2 = airports.findAirportsWithinRange(myCity.getCityName(), radius, 2)
+print "There are some cities close to me. The ones within " + str(radius) + \
+      " distance are:"
+for city in withinRangeFromMyCity :
+    print "    " + city.getCityName()
+print "The ones that are class 2 or greater are:"
+for city in withinRangeFromMyCityAndClass2 :
+    print "    " + city.getCityName()
+
 #Purposely test different city input styles
 cityA = airportDatabase[160]
-cityB = airportDatabase[41].getCityName()
-cityB = "Bangalore"
+cityB = airportDatabase[44].getCityName()
 
 distAB = airports.getDistanceBetween(cityA,cityB)
 midpt = airports.getMidpointBetween(cityA,cityB)
@@ -36,6 +49,9 @@ distFromMidpt3 = airports.getDistanceBetween(midpt, nearestToMidpt3)
 best1 = airports.findBestTransferAirport(cityA, cityB, 1, 0.99*distAB, Airport)
 best2 = airports.findBestTransferAirport(cityA, cityB, 2, 0.99*distAB, Airport)
 best3 = airports.findBestTransferAirport(cityA, cityB, 3, 0.99*distAB, Airport)
+bestReal1 = airports.findBestTransferAirport(cityA, cityB, 1, 1150, Airport)
+bestReal2 = airports.findBestTransferAirport(cityA, cityB, 2, 2300, Airport)
+bestReal3 = airports.findBestTransferAirport(cityA, cityB, 3, 3576, Airport)
 print "The midpoint between " + cityA.getCityName() + " and " + cityB + \
       " is " + str(midpt) + ". The nearest airports of each class" + \
       " to this midpoint are :\n\t" + \
@@ -54,23 +70,36 @@ print "Traveling between " + cityA.getCityName() + " and " + cityB + \
 
 print "However, these aren't necessarily the best transfer cities! The best layover airports of each class are:\n\t" + \
       best1.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, best1) + airports.getDistanceBetween(cityB, best1) - \
-          airports.getDistanceBetween(cityA, cityB)) + " extra\n\t" + \
+          airports.getDistanceBetween(cityA, cityB)) + " extra distance\n\t" + \
       best2.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, best2) + airports.getDistanceBetween(cityB, best2) - \
-          airports.getDistanceBetween(cityA, cityB)) + " extra\n\t" + \
+          airports.getDistanceBetween(cityA, cityB)) + " extra distance\n\t" + \
       best3.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, best3) + airports.getDistanceBetween(cityB, best3) - \
-          airports.getDistanceBetween(cityA, cityB)) + " extra"
+          airports.getDistanceBetween(cityA, cityB)) + " extra distance"
 
-print "The cost between Boston and Orlando is " + \
-      str(int(airports.costBetween('Boston','Orlando')))
+print "Furthermore, an airplane may not have the range to cover the distances between these cities in one go."
+if bestReal1 == -1 :
+    print "\tThe upgraded Mohawk cannot travel between these cities with just one transfer."
+elif bestReal1.getCityName() == cityA.getCityName() or bestReal1.getCityName() == cityB :
+    print "\tThe upgraded Mohawk can complete the journey between " + cityA.getCityName() + " and " + cityB + " nonstop"
+else :
+    print "\tThe upgraded Mohawk can travel via " + \
+      bestReal1.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, bestReal1) + airports.getDistanceBetween(cityB, bestReal1) - \
+          airports.getDistanceBetween(cityA, cityB)) + " extra distance"
+if bestReal2 == -1 :
+    print "\tThe upgraded Aeroeagle cannot travel between these cities with just one transfer."
+elif bestReal2.getCityName() == cityA.getCityName() or bestReal2.getCityName() == cityB :
+    print "\tThe upgraded Aeroeagle can complete the journey between " + cityA.getCityName() + " and " + cityB + " nonstop"
+else :
+    print "\tThe upgraded Aeroeagle can travel via " + \
+      bestReal2.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, bestReal2) + airports.getDistanceBetween(cityB, bestReal2) - \
+          airports.getDistanceBetween(cityA, cityB)) + " extra distance"
+if bestReal3 == -1 :
+    print "\tThe upgraded Cloudliner cannot travel between these cities with just one transfer."
+elif bestReal3.getCityName() == cityA.getCityName() or bestReal3.getCityName() == cityB :
+    print "\tThe upgraded Cloudliner can complete the journey between " + cityA.getCityName() + " and " + cityB + " nonstop"
+else :
+    print "\tThe upgraded Cloudliner can travel via " + \
+      bestReal3.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, bestReal3) + airports.getDistanceBetween(cityB, bestReal3) - \
+          airports.getDistanceBetween(cityA, cityB)) + " extra distance"
 
-radius = 500
-withinRangeFromMyCity = airports.findAirportsWithinRange(myCity.getCityName(), radius)
-withinRangeFromMyCityAndClass2 = airports.findAirportsWithinRange(myCity.getCityName(), radius, 2)
-print "There are some cities close to me. The ones within " + str(radius) + \
-      " distance are:"
-for city in withinRangeFromMyCity :
-    print "    " + city.getCityName()
-print "The ones that are class 2 or greater are:"
-for city in withinRangeFromMyCityAndClass2 :
-    print "    " + city.getCityName()
 
