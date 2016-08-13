@@ -25,13 +25,14 @@ print "The cost between Boston and Orlando is " + \
 
 radius = 500
 withinRangeFromMyCity = airports.findAirportsWithinRange(myCity.getCityName(), radius)
-withinRangeFromMyCityAndClass2 = airports.findAirportsWithinRange(myCity.getCityName(), radius, 2)
 print "There are some cities close to me. The ones within " + str(radius) + \
       " distance are:"
 for city in withinRangeFromMyCity :
     print "    " + city.getCityName()
-print "The ones that are class 2 or greater are:"
-for city in withinRangeFromMyCityAndClass2 :
+
+sortedListWithinRangeAndClass2 = airports.findAirportsTowards(myCity, 'Seattle', radius, 2)
+print "I can sort these cities by distance to Seattle and filter by class 2 and above:"
+for city in sortedListWithinRangeAndClass2 :
     print "    " + city.getCityName()
 
 #Purposely test different city input styles
@@ -102,4 +103,10 @@ else :
       bestReal3.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, bestReal3) + airports.getDistanceBetween(cityB, bestReal3) - \
           airports.getDistanceBetween(cityA, cityB)) + " extra distance"
 
-
+print "Try to determine the best route between the following city pairs using an upgraded Mohawk."
+pairs = [[20,188], [0,1], [2,3], [4,5], [6,7], [8,7], [34,50]]
+for p in pairs:
+    print airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName()
+    someRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
+    for sr in someRoute :
+        print "    " + sr.getCityName()

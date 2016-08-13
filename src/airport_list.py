@@ -62,7 +62,7 @@ def getAirportList() :
             Airport('Christchurch', 1, [10848,6600]),
             Airport('Cincinnati', 1, [3164,3900]),
             Airport('Copenhagen', 1, [6064,3132]),
-            Airport('Cordoba', 1, [3796,6164,]),
+            Airport('Cordoba', 1, [3796,6164]),
             Airport('Cuiaba', 1, [3952,5636]),
             Airport('Cuzco', 1, [3536,5560]),
             Airport('Dakar', 1, [5184,4716]),
