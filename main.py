@@ -108,23 +108,52 @@ else :
           airports.getDistanceBetween(cityA, cityB)) + " extra distance"
 '''
 print "Try to determine the best route between the following city pairs using an upgraded Mohawk."
-pairs = [[20,188], [0,1], [2,3], [4,5], [6,7], [8,7], [34,50]]
-pairs = [[162,240]]
-pairs2 = [[32,18]]
+pairs = [ \
+    [20,188],
+    [80,188],
+    [0,1],
+    [2,3],
+    [4,5],
+    [6,7],
+    [8,7],
+    [34,50],
+    [162,240],
+    [90,71]
+    ]
+#pairs= []
 for p in pairs:
+    cumRange = 0
+    ii = 0
     print airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName()
     bestRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
     for sr in bestRoute :
+        if ii > 0:
+            cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
         print "    " + sr.getCityName()
+        ii += 1
+    perfectRange = airports.getDistanceBetween(bestRoute[0], bestRoute[-1])
+    rangePct = (cumRange/perfectRange-1)*100
+    print "        Range on this route: " + str(cumRange)
+    print "        Straight Line Range: " + str(perfectRange)
+    print "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%"
+
+print "Try to determine the best route between the following city pairs using an upgraded Aeroeagle."
+pairs2 = [[32,18], [90,219], [84,204]]
+#pairs2 = [[32,18]]
 for p in pairs2:
-    midpoints = airports.getMidpointBetween(airportDatabase[p[0]], airportDatabase[p[1]], 3)
-    midpointAirports = []
-    for mp in midpoints:
-        midpointAirports.append(airports.findNearestAirport(mp, 2, Airport))
-        print midpointAirports[-1].getCityName()
-        
+    cumRange = 0
+    ii = 0
     print airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName()
     bestRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 2, 2300)
     for sr in bestRoute :
+        if ii > 0:
+            cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
         print "    " + sr.getCityName()
+        ii += 1
+    perfectRange = airports.getDistanceBetween(bestRoute[0], bestRoute[-1])
+    rangePct = (cumRange/perfectRange-1)*100
+    print "        Range on this route: " + str(cumRange)
+    print "        Straight Line Range: " + str(perfectRange)
+    print "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%"
+    
 

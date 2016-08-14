@@ -279,7 +279,9 @@ class AirportManager(object):
             jj += 1
             if not inWhileLoop and debugOn:
                 print "  Converged after " + str(jj) + " iterations."
-        
+
+        # Remove duplicates before returning value
+        pathway = self.removeDuplicates(pathway)
         return pathway
 
     """
@@ -301,14 +303,44 @@ class AirportManager(object):
     overall route is through Caracas and Madrid.
     """
     def tryAdditionalTransferCities(self, pathway, minClass=1, maxRange=100000):
+        # The path length will increase during this method, so grab initial length.
+        pathLength = len(pathway)
+        
+        # Start from the end of the list to avoid indexing errors
+        for ii in range(pathLength-2, 0, -1):
+            # Get new midpoints between ii-1 and ii+1           
+            midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
+
+            # Find closest cities to these midpoints
+            midpointAirports = []
+            for mp in midpoints:
+                midpointAirports.append(airports.findNearestAirport(mp, minClass, Airport))
+
+            # Replace the city ii with these midpoint cities
+            pathway = pathway[:ii] + midpointAirports + pathway[ii+1:]
+
+        # Remove duplicates, if any.
+        pathway = self.removeDuplicates(pathway)   
         return pathway
-    
+
+    """
+    Combination of the above algorithms to get the best route.
+    """
     def findBestRouteBetween(self, firstLoc, secondLoc, minClass=1, maxRange=100000):
+        # First get a viable path given range and class constraints.
         pathway = self.findARouteBetween(firstLoc, secondLoc, minClass, maxRange)
-        if len(pathway) > 1:
-            pathway = self.improveRoute(pathway, minClass, maxRange)
-            pathway = self.removeDuplicates(pathway)
+
+        # Throw in more intermediate cities
         if len(pathway) > 2:
             pathway = self.tryAdditionalTransferCities(pathway, minClass, maxRange)
+            pathway = self.improveRoute(pathway, minClass, maxRange)
+
+        # Then improve the path, FIXME for some routes this must be done more than once, e.g. Honolulu to Easter Island on a Mohawk
+        if len(pathway) > 2:
+            for ii in range(3):
+                pathway = self.improveRoute(pathway, minClass, maxRange)
+        
+        # if len(pathway) is 2, it is a nonstop route
+        # if len(pathway) is 1, then there was no route found.
         return pathway
             
