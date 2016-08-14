@@ -4,7 +4,7 @@ execfile("src/airports.py")
 # Simple tests
 airportDatabase = getAirportList()
 airports = AirportManager(airportDatabase)
-
+'''
 myCity = airports.findByName('Houston')
 print "My city's name is " + myCity.getCityName() + \
       " and it is located at " + str(myCity.getLocX()) + \
@@ -53,6 +53,10 @@ best3 = airports.findBestTransferAirport(cityA, cityB, 3, 0.99*distAB, Airport)
 bestReal1 = airports.findBestTransferAirport(cityA, cityB, 1, 1150, Airport)
 bestReal2 = airports.findBestTransferAirport(cityA, cityB, 2, 2300, Airport)
 bestReal3 = airports.findBestTransferAirport(cityA, cityB, 3, 3576, Airport)
+
+ANCtoYWG = airports.findBestTransferAirport('Anchorage', 'Winnipeg', 1, 1150, str)
+print ANCtoYWG
+
 print "The midpoint between " + cityA.getCityName() + " and " + cityB + \
       " is " + str(midpt) + ". The nearest airports of each class" + \
       " to this midpoint are :\n\t" + \
@@ -102,11 +106,25 @@ else :
     print "\tThe upgraded Cloudliner can travel via " + \
       bestReal3.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, bestReal3) + airports.getDistanceBetween(cityB, bestReal3) - \
           airports.getDistanceBetween(cityA, cityB)) + " extra distance"
-
+'''
 print "Try to determine the best route between the following city pairs using an upgraded Mohawk."
 pairs = [[20,188], [0,1], [2,3], [4,5], [6,7], [8,7], [34,50]]
+pairs = [[162,240]]
+pairs2 = [[32,18]]
 for p in pairs:
     print airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName()
-    someRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
-    for sr in someRoute :
+    bestRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
+    for sr in bestRoute :
         print "    " + sr.getCityName()
+for p in pairs2:
+    midpoints = airports.getMidpointBetween(airportDatabase[p[0]], airportDatabase[p[1]], 3)
+    midpointAirports = []
+    for mp in midpoints:
+        midpointAirports.append(airports.findNearestAirport(mp, 2, Airport))
+        print midpointAirports[-1].getCityName()
+        
+    print airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName()
+    bestRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 2, 2300)
+    for sr in bestRoute :
+        print "    " + sr.getCityName()
+

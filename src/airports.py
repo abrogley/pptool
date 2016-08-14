@@ -55,8 +55,8 @@ class AirportManager(object):
         else :
             return [1,0]
 
-    "Find midpoint between two cities by their names"
-    def getMidpointBetween(self, firstLoc, secondLoc):
+    "Find midpoint(s) between two cities"
+    def getMidpointBetween(self, firstLoc, secondLoc, numDivisions=2):
         if type(firstLoc) is str :
             firstLoc = self.findByName(firstLoc)
         if type(firstLoc) is Airport :
@@ -65,9 +65,22 @@ class AirportManager(object):
             secondLoc = self.findByName(secondLoc)
         if type(secondLoc) is Airport :
             secondLoc = secondLoc.getLoc()
-        xMidpoint = (secondLoc[0] + firstLoc[0])/2.0
-        yMidpoint = (secondLoc[1] + firstLoc[1])/2.0
-        return [xMidpoint, yMidpoint]
+
+        # Simple bisection case
+        if numDivisions == 2:
+            xMidpoint = (secondLoc[0] + firstLoc[0])/2.0
+            yMidpoint = (secondLoc[1] + firstLoc[1])/2.0
+            return [xMidpoint, yMidpoint]
+        # Generic n-section case
+        else:
+            weightings = [1.0*x/numDivisions for x in range(1, numDivisions)]
+            midpoints = []
+            for w in weightings:
+                thisPoint = [w*secondLoc[0] + (1.0-w)*firstLoc[0], \
+                             w*secondLoc[1] + (1.0-w)*firstLoc[1]]
+                midpoints.append(thisPoint)
+            return midpoints
+            
 
     "Find nearest airport to a given x,y coordinate"
     def findNearestAirport(self, firstLoc, minClass=1, desiredType=str):
@@ -192,35 +205,52 @@ class AirportManager(object):
     3. Repeat from Step 1 using the closest city to target
 
     4. If a path is found, return the list of cities.
-    
-    5. Iterate on this path by seeing if there is range savings anywhere.
 
-    6. If no path is found, try the next best city option from the starting point
+    5. If no path is found, try the next best city option from the starting point
 
-    7. If no path is found after exhausting all the options from the first location, start
-        checking all options from the best city in Step 2.
+    6. If no path is found after exhausting all the options from the first location, start
+        checking all options from the best city in Step 2. (NOT YET IMPLEMENTED)
 
-    8. If no path is found after exhausting all intermediate cities, return -1 for no path found
+    7. If no path is found after exhausting all intermediate cities, return -1 for no path found
     """
-    def findBestRouteBetween(self, firstLoc, secondLoc, minClass=1, maxRange=100000, desiredType=str):
+    def findARouteBetween(self, firstLoc, secondLoc, minClass=1, maxRange=100000):
         # Steps 1-4
         maxSteps = 20
         pathway = [firstLoc]
         for ii in range(maxSteps):
             citiesToCheck = self.findAirportsTowards(pathway[-1], secondLoc, maxRange, minClass)
-            if len(citiesToCheck) > 1 :
-                if citiesToCheck[0] not in pathway :
-                    pathway.append(citiesToCheck[0])
-                else :
-                    pathway.append(citiesToCheck[1])
-                if citiesToCheck[0] == secondLoc :
+            if len(citiesToCheck) > 0 :
+                jj = 0
+                inWhileLoop = True
+                while inWhileLoop :
+                    #Don't add a city already in our pathway.
+                    if citiesToCheck[jj] not in pathway :
+                        pathway.append(citiesToCheck[jj])
+                        inWhileLoop = False
+                    else :
+                        if jj >= len(citiesToCheck):
+                            inWhileLoop = False
+                            continue
+                        jj += 1
+                        
+                #If we hit our target destination, we're done.
+                if citiesToCheck[jj] == secondLoc :
                     break
+        return pathway
         
-        # Step 5
+    """
+    Iterate on this path by seeing if there is range savings anywhere.
+    """
+    def improveRoute(self, pathway, minClass=1, maxRange=100000):
+        debugOn = False
+        # Compare three consecutive cities in the pathway to see if another intermediate
+        # city results in a shorter path.
         pathLength = len(pathway)
-        initPathway = pathway
+        previousPathway = list(pathway)
         inWhileLoop = True
+        jj = 0
         while inWhileLoop :
+            inWhileLoop = False
             ii = 0
             while ii < pathLength-2 :
                 airportN      = pathway[ii]
@@ -228,13 +258,57 @@ class AirportManager(object):
                 airportNplus2 = pathway[ii+2]
                 betterNplus1 = self.findBestTransferAirport(airportN, airportNplus2, minClass, maxRange, Airport)
                 if airportNplus1 is not betterNplus1 :
+                    if debugOn:
+                       print "      Found a better route!"
+                       print "         instead of " + airportN.getCityName() + "->" + airportNplus1.getCityName() + "->" + airportNplus2.getCityName()
+                       print "         there is " + airportN.getCityName() + "->" + betterNplus1.getCityName() + "->" + airportNplus2.getCityName()
                     pathway[ii+1] = betterNplus1
                 ii += 1
-            if pathway is initPathway:
-                inWhileLoop = False
+                
+            for kk in range(len(previousPathway)) :
+                if previousPathway[kk].getCityName() is not pathway[kk].getCityName() :
+                    extraText =  "         These are different!"
+                    inWhileLoop = True
+                else :
+                    extraText = ""
+                    inWhileLoop = False or inWhileLoop
+                if debugOn:
+                    print "      " + previousPathway[kk].getCityName() + "     " + pathway[kk].getCityName() + extraText
 
+            previousPathway = list(pathway)
+            jj += 1
+            if not inWhileLoop and debugOn:
+                print "  Converged after " + str(jj) + " iterations."
+        
+        return pathway
+
+    """
+    Remove duplicate cities from pathway.
+    """
+    def removeDuplicates(self, pathway):
+        # Remove duplicate cities from list, iff they are adjacent. (They should never not be adjacent)
+        # Start from the end of the list to avoid indexing errors
+        pathLength = len(pathway)
         for ii in range(pathLength-1,0,-1):
             if pathway[ii] == pathway[ii-1]:
                 del pathway[ii]
-        
+        return pathway    
+
+    """
+    It's possible that in the pathway found thus far, one transfer city would be better replaced
+    by two transfer cities. An example would be Bogota to Barcelona using class 2+ cities on a
+    fully upgraded Aeroeagle. The shortest 1-transfer route is through Recife, while the shortest
+    overall route is through Caracas and Madrid.
+    """
+    def tryAdditionalTransferCities(self, pathway, minClass=1, maxRange=100000):
         return pathway
+    
+    def findBestRouteBetween(self, firstLoc, secondLoc, minClass=1, maxRange=100000):
+        pathway = self.findARouteBetween(firstLoc, secondLoc, minClass, maxRange)
+        if len(pathway) > 1:
+            pathway = self.improveRoute(pathway, minClass, maxRange)
+            pathway = self.removeDuplicates(pathway)
+        if len(pathway) > 2:
+            pathway = self.tryAdditionalTransferCities(pathway, minClass, maxRange)
+        return pathway
+            
