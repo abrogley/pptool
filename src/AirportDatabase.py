@@ -1,4 +1,4 @@
-execfile("src/airport.py")
+execfile("src/Airport.py")
 
 # list of airports in Pocket Planes
 def getAirportList() :

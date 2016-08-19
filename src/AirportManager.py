@@ -309,7 +309,7 @@ class AirportManager(object):
         # Start from the end of the list to avoid indexing errors
         for ii in range(pathLength-2, 0, -1):
             # Get new midpoints between ii-1 and ii+1           
-            midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
+            midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 6)
 
             # Find closest cities to these midpoints
             midpointAirports = []

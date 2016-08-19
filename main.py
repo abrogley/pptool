@@ -1,5 +1,5 @@
-execfile("src/airport_list.py")
-execfile("src/airports.py")
+execfile("src/AirportDatabase.py")
+execfile("src/Airports.py")
 
 # Simple tests
 airportDatabase = getAirportList()
@@ -138,7 +138,7 @@ for p in pairs:
     print "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%"
 
 print "Try to determine the best route between the following city pairs using an upgraded Aeroeagle."
-pairs2 = [[32,18], [90,219], [84,204]]
+pairs2 = [[32,18], [90,219], [84,204], [156,67]]
 #pairs2 = [[32,18]]
 for p in pairs2:
     cumRange = 0
