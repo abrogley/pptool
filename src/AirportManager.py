@@ -11,15 +11,11 @@ class AirportManager(object):
 
     "Look up an Airport class instance by city name"
     def findByName(self, searchString):
-        foundAirport = -1
-        for ii in range(len(self.airports)):
-            if searchString is self.airports[ii].getCityName() :
-                foundAirport = ii
-        if foundAirport < 0 :
-            print "Could not find city named " + searchString + "."
-            return -1
-        else :
-            return self.airports[foundAirport]
+        for ap in self.airports:
+            if searchString == ap.getCityName() :
+                return ap
+        print "Could not find city named " + searchString + "."
+        return ""
 
     """
     Find the vector from first city to second city.

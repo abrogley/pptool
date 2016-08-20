@@ -1,10 +1,10 @@
 execfile("src/AirportDatabase.py")
-execfile("src/Airports.py")
+execfile("src/AirportManager.py")
 
 # Simple tests
 airportDatabase = getAirportList()
 airports = AirportManager(airportDatabase)
-'''
+
 myCity = airports.findByName('Houston')
 print "My city's name is " + myCity.getCityName() + \
       " and it is located at " + str(myCity.getLocX()) + \
@@ -19,6 +19,9 @@ print "To get anywhere from my city, there is a base fare of " + \
 
 print "The distance between Detroit and Tokyo is " + \
       str(airports.getDistanceBetween('Detroit','Tokyo'))
+
+print "The vector between Houston and Sao Paolo is " + \
+      str(airports.findVector('Houston','Sao Paolo'))
 
 print "The cost between Boston and Orlando is " + \
       str(int(airports.costBetween('Boston','Orlando')))
@@ -36,10 +39,15 @@ for city in sortedListWithinRangeAndClass2 :
     print "    " + city.getCityName()
 
 #Purposely test different city input styles
-cityA = airportDatabase[160]
-cityB = airportDatabase[44].getCityName()
+cityA = airportDatabase[4]
+cityB = airportDatabase[5].getCityName()
 
 distAB = airports.getDistanceBetween(cityA,cityB)
+vecAB = airports.findVector(cityA,cityB)
+print vecAB
+print cityA.getCityName()
+print cityB
+'''
 midpt = airports.getMidpointBetween(cityA,cityB)
 nearestToMidpt1 = airports.findNearestAirport(midpt, 1, Airport)
 nearestToMidpt2 = airports.findNearestAirport(midpt, 2, Airport)
@@ -106,7 +114,7 @@ else :
     print "\tThe upgraded Cloudliner can travel via " + \
       bestReal3.getCityName() + " which is " + str(airports.getDistanceBetween(cityA, bestReal3) + airports.getDistanceBetween(cityB, bestReal3) - \
           airports.getDistanceBetween(cityA, cityB)) + " extra distance"
-'''
+
 print "Try to determine the best route between the following city pairs using an upgraded Mohawk."
 pairs = [ \
     [20,188],
@@ -156,4 +164,4 @@ for p in pairs2:
     print "        Straight Line Range: " + str(perfectRange)
     print "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%"
     
-
+'''
