@@ -82,7 +82,7 @@ def getAirportList() :
             Airport('Geraldton', 1, [9132,6028]),
             Airport('Glasgow', 1, [5568,3124]),
             Airport('Goose Bay', 1, [3808,3156]),
-            Airport('Guangzhou', 2, [9060,4420]),
+            Airport('Guangzhou', 3, [9060,4420]),
             Airport('Guatemala', 2, [2960,4712]),
             Airport('Hammerfest', 1, [6408,2152]),
             Airport('Hanoi', 2, [8840,4528]),
