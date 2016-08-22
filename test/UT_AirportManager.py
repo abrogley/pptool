@@ -1,4 +1,5 @@
 import unittest
+execfile("test/MoreAsserts.py")
 execfile("src/AirportManager.py")
 execfile("src/AirportDatabase.py")
 
@@ -6,13 +7,6 @@ execfile("src/AirportDatabase.py")
 Test functionality of base Airport class
 """
 class AirportManagerTestCase(unittest.TestCase):
-
-    def assertNear(self, expected, actual, tolerance=1e-6):
-        assert abs(actual - expected) < tolerance
-
-    def assertVectorNear(self, expected, actual, tolerance=1e-6):
-        self.assertNear(expected[0], actual[0], tolerance)
-        self.assertNear(expected[1], actual[1], tolerance)  
 
     def setUp(self):
         self.ad = getAirportList() #load Airport Database
@@ -100,30 +94,30 @@ class AirportManagerTestCase(unittest.TestCase):
 
     def testFindUnitVector(self):
         vec1 = self.am.findUnitVector('Houston','Sao Paolo')
-        self.assertVectorNear( vec1, [0.6569486, 0.7539354] )
+        assertVectorNear( vec1, [0.6569486, 0.7539354] )
         
         vec2 = self.am.findUnitVector([1234, 5678], [2345, 3456])
-        self.assertVectorNear( vec2, [0.4472136, -0.8944272] )
+        assertVectorNear( vec2, [0.4472136, -0.8944272] )
         
         vec3 = self.am.findUnitVector(self.ad[4], self.ad[5]) #Algiers to Alice Springs
-        self.assertVectorNear( vec3, [0.8982091, 0.4395685] )
+        assertVectorNear( vec3, [0.8982091, 0.4395685] )
 
     def testGetDistanceBetween(self):
         dist1 = self.am.getDistanceBetween('Houston','Sao Paolo')
-        self.assertNear(dist1, 2185.8636737)
+        assertNear(dist1, 2185.8636737)
         
         dist2 = self.am.getDistanceBetween([1120, 950], [1000, 1000])
         assert dist2 == 130
         
         dist3 = self.am.getDistanceBetween(self.ad[4], self.ad[5]) #Algiers to Alice Springs
-        self.assertNear(dist3, 4404.3196978)
+        assertNear(dist3, 4404.3196978)
 
     def testGetMidpointBetween(self):
         mp1 = self.am.getMidpointBetween('Houston','Sao Paolo')
-        self.assertVectorNear(mp1[0], [3530, 5096])
+        assertVectorNear(mp1[0], [3530, 5096])
 
         mp2 = self.am.getMidpointBetween('Houston','Sao Paolo',5)
-        self.assertVectorNear(mp2[0], [3099.2, 4601.6])
-        self.assertVectorNear(mp2[1], [3386.4, 4931.2])
-        self.assertVectorNear(mp2[2], [3673.6, 5260.8])
-        self.assertVectorNear(mp2[3], [3960.8, 5590.4])
+        assertVectorNear(mp2[0], [3099.2, 4601.6])
+        assertVectorNear(mp2[1], [3386.4, 4931.2])
+        assertVectorNear(mp2[2], [3673.6, 5260.8])
+        assertVectorNear(mp2[3], [3960.8, 5590.4])
