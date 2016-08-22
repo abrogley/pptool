@@ -138,20 +138,13 @@ class AirportManager(object):
         firstLoc = locList[0]
         secondLoc = locList[1]
 
-        # Simple bisection case
-        if numDivisions == 2:
-            xMidpoint = (secondLoc[0] + firstLoc[0])/2.0
-            yMidpoint = (secondLoc[1] + firstLoc[1])/2.0
-            return [xMidpoint, yMidpoint]
-        # Generic n-section case
-        else:
-            weightings = [1.0*x/numDivisions for x in range(1, numDivisions)]
-            midpoints = []
-            for w in weightings:
-                thisPoint = [w*secondLoc[0] + (1.0-w)*firstLoc[0], \
-                             w*secondLoc[1] + (1.0-w)*firstLoc[1]]
-                midpoints.append(thisPoint)
-            return midpoints
+        weightings = [1.0*x/numDivisions for x in range(1, numDivisions)]
+        midpoints = []
+        for w in weightings:
+            thisPoint = [w*secondLoc[0] + (1.0-w)*firstLoc[0], \
+                         w*secondLoc[1] + (1.0-w)*firstLoc[1]]
+            midpoints.append(thisPoint)
+        return midpoints
 
 
     "Find nearest airport to a given x,y coordinate"

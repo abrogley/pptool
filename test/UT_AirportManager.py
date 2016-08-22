@@ -117,3 +117,13 @@ class AirportManagerTestCase(unittest.TestCase):
         
         dist3 = self.am.getDistanceBetween(self.ad[4], self.ad[5]) #Algiers to Alice Springs
         self.assertNear(dist3, 4404.3196978)
+
+    def testGetMidpointBetween(self):
+        mp1 = self.am.getMidpointBetween('Houston','Sao Paolo')
+        self.assertVectorNear(mp1[0], [3530, 5096])
+
+        mp2 = self.am.getMidpointBetween('Houston','Sao Paolo',5)
+        self.assertVectorNear(mp2[0], [3099.2, 4601.6])
+        self.assertVectorNear(mp2[1], [3386.4, 4931.2])
+        self.assertVectorNear(mp2[2], [3673.6, 5260.8])
+        self.assertVectorNear(mp2[3], [3960.8, 5590.4])
