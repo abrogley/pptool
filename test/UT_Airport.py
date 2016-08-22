@@ -28,6 +28,3 @@ class AirportTestCase(unittest.TestCase):
 
     def testGetLocY(self):
         assert self.cityB.getLocY() == 2345, "getLocY() returned incorrect value"
-
-if __name__ == "__main__":
-    unittest.main() # run all tests
