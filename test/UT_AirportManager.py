@@ -7,6 +7,13 @@ Test functionality of base Airport class
 """
 class AirportManagerTestCase(unittest.TestCase):
 
+    def assertNear(self, expected, actual, tolerance=1e-6):
+        assert abs(actual - expected) < tolerance
+
+    def assertVectorNear(self, expected, actual, tolerance=1e-6):
+        self.assertNear(expected[0], actual[0], tolerance)
+        self.assertNear(expected[1], actual[1], tolerance)  
+
     def setUp(self):
         self.ad = getAirportList() #load Airport Database
         self.am = AirportManager(self.ad)
@@ -16,6 +23,8 @@ class AirportManagerTestCase(unittest.TestCase):
         self.houston = self.am.findByName('Houston')
         self.saoPaolo = self.am.findByName('Sao Paolo')
         self.fakeCity = self.am.findByName('Not a Real City')
+        self.xian = self.am.findByName('Xi\'an')
+        self.stPete = self.am.findByName('St. Petersburg')          
 
     def tearDown(self):
         pass
@@ -24,6 +33,10 @@ class AirportManagerTestCase(unittest.TestCase):
         assert self.houston.getCityName() == "Houston", "findByName() could not find 1 word city"
         assert self.houston.getCityName() != "WRONG NAME", "findByName() found a false positive"
         assert self.saoPaolo.getCityName() == "Sao Paolo", "findByName() could not find 2 word city"
+        assert self.xian.getCityName() == "Xi\'an", \
+               "findByName() could not find Xi'an. Problem with apostrophe?"
+        assert self.stPete.getCityName() == "St. Petersburg", \
+               "findByName() could not find St. Petersburg. Problem with period?"
         assert self.fakeCity == "", "findByName() found a city not in the list"
 
     def testParseInputsPassThru(self):
@@ -78,10 +91,29 @@ class AirportManagerTestCase(unittest.TestCase):
     def testFindVector(self):
         vec1 = self.am.findVector('Houston','Sao Paolo')
         assert vec1 == [1436, 1648]
+        
         vec2 = self.am.findVector([1234, 5678], [2345, 3456])
         assert vec2 == [1111, -2222]
+        
         vec3 = self.am.findVector(self.ad[4], self.ad[5]) #Algiers to Alice Springs
         assert vec3 == [3956, 1936]
-        badfind = self.am.findVector('Houston','Not a Real City')
-        assert badfind == -1
 
+    def testFindUnitVector(self):
+        vec1 = self.am.findUnitVector('Houston','Sao Paolo')
+        self.assertVectorNear( vec1, [0.6569486, 0.7539354] )
+        
+        vec2 = self.am.findUnitVector([1234, 5678], [2345, 3456])
+        self.assertVectorNear( vec2, [0.4472136, -0.8944272] )
+        
+        vec3 = self.am.findUnitVector(self.ad[4], self.ad[5]) #Algiers to Alice Springs
+        self.assertVectorNear( vec3, [0.8982091, 0.4395685] )
+
+    def testGetDistanceBetween(self):
+        dist1 = self.am.getDistanceBetween('Houston','Sao Paolo')
+        self.assertNear(dist1, 2185.8636737)
+        
+        dist2 = self.am.getDistanceBetween([1120, 950], [1000, 1000])
+        assert dist2 == 130
+        
+        dist3 = self.am.getDistanceBetween(self.ad[4], self.ad[5]) #Algiers to Alice Springs
+        self.assertNear(dist3, 4404.3196978)

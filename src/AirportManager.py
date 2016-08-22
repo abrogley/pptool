@@ -87,24 +87,27 @@ class AirportManager(object):
     Find the vector from first city to second city.
     """
     def findVector(self, firstLoc, secondLoc):
-        if type(firstLoc) is str :
-            firstLoc = self.findByName(firstLoc)
-            if firstLoc == "":
-                return -1
-        if type(firstLoc) is Airport :
-            firstLoc = firstLoc.getLoc()
-        if type(secondLoc) is str :
-            secondLoc = self.findByName(secondLoc)
-            if secondLoc == "":
-                return -1
-        if type(secondLoc) is Airport :
-            secondLoc = secondLoc.getLoc()
+        locList = self.parseInputs([firstLoc, secondLoc])
+        if locList < 0:
+            return locList
+        firstLoc = locList[0]
+        secondLoc = locList[1]
+        
         xDistance = secondLoc[0] - firstLoc[0]
         yDistance = secondLoc[1] - firstLoc[1]
         return [xDistance, yDistance]
 
-    "Find distance between two cities or locations by their names, Airport (py) class, or coordinates"
+    """
+    Find distance between two cities or locations by their names, Airport (type),
+    or coordinates
+    """
     def getDistanceBetween(self, firstLoc, secondLoc):
+        locList = self.parseInputs([firstLoc, secondLoc])
+        if locList < 0:
+            return locList
+        firstLoc = locList[0]
+        secondLoc = locList[1]
+        
         distVector = self.findVector(firstLoc, secondLoc)
         distance = (distVector[0]**2 + distVector[1]**2)**0.5
         return distance
@@ -113,8 +116,14 @@ class AirportManager(object):
     Find the unit vector from first city to second city.
     """
     def findUnitVector(self, firstLoc, secondLoc):
+        locList = self.parseInputs([firstLoc, secondLoc])
+        if locList < 0:
+            return locList
+        firstLoc = locList[0]
+        secondLoc = locList[1]
+        
         distVector = self.findVector(firstLoc, secondLoc)
-        distance = (distVector[0]**2 + distVector[1]**2)**0.5
+        distance = self.getDistanceBetween(firstLoc, secondLoc)
         if distance > 0 :
             unitVector = [x/distance for x in distVector]
             return unitVector
@@ -123,14 +132,11 @@ class AirportManager(object):
 
     "Find midpoint(s) between two cities"
     def getMidpointBetween(self, firstLoc, secondLoc, numDivisions=2):
-        if type(firstLoc) is str :
-            firstLoc = self.findByName(firstLoc)
-        if type(firstLoc) is Airport :
-            firstLoc = firstLoc.getLoc()
-        if type(secondLoc) is str :
-            secondLoc = self.findByName(secondLoc)
-        if type(secondLoc) is Airport :
-            secondLoc = secondLoc.getLoc()
+        locList = self.parseInputs([firstLoc, secondLoc])
+        if locList < 0:
+            return locList
+        firstLoc = locList[0]
+        secondLoc = locList[1]
 
         # Simple bisection case
         if numDivisions == 2:
