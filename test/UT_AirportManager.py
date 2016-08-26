@@ -121,3 +121,13 @@ class AirportManagerTestCase(unittest.TestCase):
         assertVectorNear(mp2[1], [3386.4, 4931.2])
         assertVectorNear(mp2[2], [3673.6, 5260.8])
         assertVectorNear(mp2[3], [3960.8, 5590.4])
+
+    def testFindNearestAirport(self):
+        point = [7000,5000]
+        na1 = self.am.findNearestAirport(point)
+        na2 = self.am.findNearestAirport(point,2)
+        na3 = self.am.findNearestAirport(point,3,Airport)
+        assert na1 == 'Mogadishu'
+        assert na2 == 'Nairobi'
+        assert na3.getCityName() == 'Cairo'
+        

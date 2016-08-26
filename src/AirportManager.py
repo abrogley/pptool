@@ -149,10 +149,10 @@ class AirportManager(object):
 
     "Find nearest airport to a given x,y coordinate"
     def findNearestAirport(self, firstLoc, minClass=1, desiredType=str):
-        if type(firstLoc) is str :
-            firstLoc = self.findByName(firstLoc)
-        if type(firstLoc) is Airport :
-            firstLoc = firstLoc.getLoc()
+        locList = self.parseInputs([firstLoc])
+        if locList < 0:
+            return locList
+        firstLoc = locList[0]
 
         bestRangeSoFar = 1000000
         bestIndexSoFar = -1
