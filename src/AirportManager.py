@@ -5,6 +5,7 @@ class AirportManager(object):
     def __init__(self, inputList):
         self.baseFare             = 50
         self.coinsPerUnitDistance = 0.25
+        self.debugPrint           = True
 
         "Airport coordinates from some input source"
         self.airports = inputList
@@ -47,6 +48,8 @@ class AirportManager(object):
                     inputs = [inputs]
             elif len(inputs) == 0:
                 # There needs to be some kind of input in the list
+                if self.debugPrint:
+                    print inputs
                 return -4
 
         # Similarly, let's encapsulate a single string or single Airport as a list.
@@ -56,6 +59,8 @@ class AirportManager(object):
         # By now, everything should be a list. If not, return error.
         if type(inputs) is not list :
             # Type error. List expected
+            if self.debugPrint:
+                print inputs
             return -3
 
         for item in inputs:
@@ -64,6 +69,8 @@ class AirportManager(object):
             # but each item must be one of these types.
             if type(item) not in [list, str, Airport]:
                 # Type error of input item in list
+                if self.debugPrint:
+                    print inputs
                 return -2
 
             # First, find the Airport by string name if needed
@@ -71,6 +78,8 @@ class AirportManager(object):
                 item = self.findByName(item)
                 if item == "":
                     # Could not find a city by the string name in item
+                    if self.debugPrint:
+                        print inputs
                     return -1
 
             # Then, get the location of the Airport.
@@ -134,6 +143,8 @@ class AirportManager(object):
     def getMidpointBetween(self, firstLoc, secondLoc, numDivisions=2):
         locList = self.parseInputs([firstLoc, secondLoc])
         if locList < 0:
+            print "firstLoc is of type " + type(firstLoc)
+            print "secondLoc is of type " + type(secondLoc)
             return locList
         firstLoc = locList[0]
         secondLoc = locList[1]
@@ -149,7 +160,7 @@ class AirportManager(object):
 
     "Find nearest airport to a given x,y coordinate"
     def findNearestAirport(self, firstLoc, minClass=1, desiredType=str):
-        locList = self.parseInputs([firstLoc])
+        locList = self.parseInputs(firstLoc)
         if locList < 0:
             return locList
         firstLoc = locList[0]
@@ -192,7 +203,7 @@ class AirportManager(object):
             firstLoc = firstLoc.getLoc()
 
         leastExtraRangeSoFar = 1000000
-        bestIndexSoFar = -1
+        bestIndexSoFar = -5
 
         totalRange = self.getDistanceBetween(firstLoc, secondLoc)
 
@@ -210,9 +221,9 @@ class AirportManager(object):
                     bestIndexSoFar = ii
                     leastExtraRangeSoFar = currentExtraRange
 
-        if bestIndexSoFar == -1 :
+        if bestIndexSoFar < 0 :
             # This means no transfer city was found less than maxRange
-            return -1
+            return bestIndexSoFar
 
         if desiredType == str :
             return self.airports[bestIndexSoFar].getCityName()
@@ -370,18 +381,25 @@ class AirportManager(object):
     def tryAdditionalTransferCities(self, pathway, minClass=1, maxRange=100000):
         # The path length will increase during this method, so grab initial length.
         pathLength = len(pathway)
+        #for cc in pathway:
+        #    print cc.getCityName()
 
         # Start from the end of the list to avoid indexing errors
         for ii in range(pathLength-2, 0, -1):
             # Get new midpoints between ii-1 and ii+1
-            midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 6)
-
+            distance = self.getDistanceBetween(pathway[ii-1], pathway[ii+1])
+            midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
+            for mp in midpoints :
+                if mp < 0 :
+                    print "ERROR: Problem in finding midpoints"
+                    
             # Find closest cities to these midpoints
             midpointAirports = []
             for mp in midpoints:
-                midpointAirports.append(airports.findNearestAirport(mp, minClass, Airport))
-
-            # Replace the city ii with these midpoint cities
+                nearestToMp = airports.findNearestAirport([mp], minClass, Airport)
+                if nearestToMp is not int :
+                    midpointAirports.append(nearestToMp)
+            # Remove city ii and insert midpoing list between the city ii and ii+1
             pathway = pathway[:ii] + midpointAirports + pathway[ii+1:]
 
         # Remove duplicates, if any.
@@ -394,7 +412,7 @@ class AirportManager(object):
     def findBestRouteBetween(self, firstLoc, secondLoc, minClass=1, maxRange=100000):
         # First get a viable path given range and class constraints.
         pathway = self.findARouteBetween(firstLoc, secondLoc, minClass, maxRange)
-
+        
         # Throw in more intermediate cities
         if len(pathway) > 2:
             pathway = self.tryAdditionalTransferCities(pathway, minClass, maxRange)
@@ -407,5 +425,6 @@ class AirportManager(object):
 
         # if len(pathway) is 2, it is a nonstop route
         # if len(pathway) is 1, then there was no route found.
+        
         return pathway
 

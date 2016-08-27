@@ -11,6 +11,7 @@ class AirportManagerTestCase(unittest.TestCase):
     def setUp(self):
         self.ad = getAirportList() #load Airport Database
         self.am = AirportManager(self.ad)
+        self.am.debugPrint = False
         self.singleLoc = [123, 456]
         self.singleLocInNestedList = [[234, 567]]
         self.volgograd = self.am.findByName('Volgograd')
