@@ -388,6 +388,7 @@ class AirportManager(object):
         for ii in range(pathLength-2, 0, -1):
             # Get new midpoints between ii-1 and ii+1
             distance = self.getDistanceBetween(pathway[ii-1], pathway[ii+1])
+            # FIXME: 4 midpoints is needed for severe cases like Honolulu to Easter Island
             midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
             for mp in midpoints :
                 if mp < 0 :
