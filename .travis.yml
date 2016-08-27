@@ -9,4 +9,4 @@ python:
 # command to run tests
 script:
   # Run the unit tests
-  - python runTests
+  - python runTests.py
