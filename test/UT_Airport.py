@@ -1,5 +1,5 @@
 import unittest
-execfile("src/Airport.py")
+exec(open("src/Airport.py").read())
 
 """
 Test functionality of base Airport class

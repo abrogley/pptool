@@ -1,5 +1,5 @@
-execfile('test/UT_Airport.py')
-execfile('test/UT_AirportManager.py')
+exec(open('test/UT_Airport.py').read())
+exec(open('test/UT_AirportManager.py').read())
         
 
 # This runs ALL the above tests

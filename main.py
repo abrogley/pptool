@@ -1,5 +1,5 @@
-execfile("src/AirportDatabase.py")
-execfile("src/AirportManager.py")
+exec(open("src/AirportDatabase.py").read())
+exec(open("src/AirportManager.py").read())
 
 # Simple tests
 airportDatabase = getAirportList()

@@ -1,7 +1,7 @@
 import unittest
-execfile("test/MoreAsserts.py")
-execfile("src/AirportManager.py")
-execfile("src/AirportDatabase.py")
+exec(open("test/MoreAsserts.py").read())
+exec(open("src/AirportManager.py").read())
+exec(open("src/AirportDatabase.py").read())
 
 """
 Test functionality of base Airport class
