@@ -132,3 +132,10 @@ class AirportManagerTestCase(unittest.TestCase):
         assert na2 == 'Nairobi'
         assert na3.getCityName() == 'Cairo'
         
+    def testGetCostBetween(self):
+        cost1 = self.am.getCostBetween([1000,0],[2000,0])
+        assert cost1 == 300
+        cost2 = self.am.getCostBetween('Atlanta','Shenyang')
+        assert cost2 == 1606
+        cost3 = self.am.getCostBetween('Lagos',self.xian)
+        assert cost3 == 877

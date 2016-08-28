@@ -185,8 +185,14 @@ class AirportManager(object):
 
 
     "Find the job cost (payout) between two cities by their names"
-    def costBetween(self, firstLoc, secondLoc):
-        cost = self.getDistanceBetween(firstLoc, secondLoc) * self.coinsPerUnitDistance + self.baseFare
+    def getCostBetween(self, firstLoc, secondLoc):
+        locList = self.parseInputs([firstLoc, secondLoc])
+        if locList is int:
+            return locList
+        firstLoc = locList[0]
+        secondLoc = locList[1]
+        
+        cost = int(self.getDistanceBetween(firstLoc, secondLoc) * self.coinsPerUnitDistance + self.baseFare)
         return cost
 
     """

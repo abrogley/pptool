@@ -25,7 +25,7 @@ print( "The vector between Houston and Sao Paolo is " + \
       str(airports.findVector('Houston','Sao Paolo')) )
 
 print( "The cost between Boston and Orlando is " + \
-      str(int(airports.costBetween('Boston','Orlando'))) )
+      str(int(airports.getCostBetween('Boston','Orlando'))) )
 
 radius = 500
 withinRangeFromMyCity = airports.findAirportsWithinRange(myCity.getCityName(), radius)
