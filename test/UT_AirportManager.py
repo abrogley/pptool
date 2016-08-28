@@ -169,4 +169,3 @@ class AirportManagerTestCase(unittest.TestCase):
         assert sortedList3[0].getCityName() == 'Saskatoon'
         assert sortedList3[-1].getCityName() == 'Yellowknife'
         assert len(sortedList3) == 4
-        
