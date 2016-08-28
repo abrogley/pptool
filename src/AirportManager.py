@@ -97,7 +97,7 @@ class AirportManager(object):
     """
     def findVector(self, firstLoc, secondLoc):
         locList = self.parseInputs([firstLoc, secondLoc])
-        if locList < 0:
+        if locList is int:
             return locList
         firstLoc = locList[0]
         secondLoc = locList[1]
@@ -112,7 +112,7 @@ class AirportManager(object):
     """
     def getDistanceBetween(self, firstLoc, secondLoc):
         locList = self.parseInputs([firstLoc, secondLoc])
-        if locList < 0:
+        if locList is int:
             return locList
         firstLoc = locList[0]
         secondLoc = locList[1]
@@ -126,7 +126,7 @@ class AirportManager(object):
     """
     def findUnitVector(self, firstLoc, secondLoc):
         locList = self.parseInputs([firstLoc, secondLoc])
-        if locList < 0:
+        if locList is int:
             return locList
         firstLoc = locList[0]
         secondLoc = locList[1]
@@ -142,7 +142,7 @@ class AirportManager(object):
     "Find midpoint(s) between two cities"
     def getMidpointBetween(self, firstLoc, secondLoc, numDivisions=2):
         locList = self.parseInputs([firstLoc, secondLoc])
-        if locList < 0:
+        if locList is int:
             print( "firstLoc is of type " + type(firstLoc) )
             print( "secondLoc is of type " + type(secondLoc) )
             return locList
@@ -161,7 +161,8 @@ class AirportManager(object):
     "Find nearest airport to a given x,y coordinate"
     def findNearestAirport(self, firstLoc, minClass=1, desiredType=str):
         locList = self.parseInputs(firstLoc)
-        if locList < 0:
+        if locList is int:
+            # Int is only returned upon not parsing inputs properly
             return locList
         firstLoc = locList[0]
 
