@@ -139,3 +139,18 @@ class AirportManagerTestCase(unittest.TestCase):
         assert cost2 == 1606
         cost3 = self.am.getCostBetween('Lagos',self.xian)
         assert cost3 == 877
+        
+    def testFindAirportsWithinRange(self):
+        # Situation with 1 city in range
+        list1 = self.am.findAirportsWithinRange(self.houston, 500, 3)
+        assert list1[0].getCityName() == 'Mexico City'
+        assert len(list1) == 1
+        
+        #Situation with several cities in range
+        list2 = self.am.findAirportsWithinRange('Riga', 500, 2)
+        assert len(list2) == 3
+        
+        #Situation with no cities in range
+        list3 = self.am.findAirportsWithinRange([0,0], 800)
+        assert len(list3) == 0
+        

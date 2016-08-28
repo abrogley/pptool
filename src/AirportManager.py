@@ -241,15 +241,20 @@ class AirportManager(object):
     Find the list of all airports within range of named airport
     with optional airport class filter.
     """
-    def findAirportsWithinRange(self, airportName, maxRange, minClass=1):
+    def findAirportsWithinRange(self, firstLoc, maxRange, minClass=1):
+        locList = self.parseInputs([firstLoc])
+        if locList is int:
+            return locList
+        firstLoc = locList[0]
+        
         subsetWithinRange = []
         for ii in range(len(self.airports)):
             candidateAirport = self.airports[ii]
 
-            if airportName is candidateAirport.getCityName():
+            if firstLoc is candidateAirport.getCityName():
                 continue
 
-            if (self.getDistanceBetween(airportName, candidateAirport.getCityName()) < maxRange) :
+            if (self.getDistanceBetween(firstLoc, candidateAirport.getCityName()) < maxRange) :
                 if candidateAirport.getClass() < minClass :
                     continue
                 else :
