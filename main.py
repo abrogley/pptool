@@ -1,9 +1,11 @@
 exec(open("src/AirportDatabase.py").read())
 exec(open("src/AirportManager.py").read())
+exec(open("src/RouteManager.py").read())
 
 # Simple tests
 airportDatabase = getAirportList()
 airports = AirportManager(airportDatabase)
+router = RouteManager(airports)
 airports.debugPrint = False
 
 #Purposely test different city input styles
@@ -24,14 +26,14 @@ distFromMidpt1 = airports.getDistanceBetween(midpt[0], nearestToMidpt1)
 distFromMidpt2 = airports.getDistanceBetween(midpt[0], nearestToMidpt2)
 distFromMidpt3 = airports.getDistanceBetween(midpt[0], nearestToMidpt3)
 
-best1 = airports.findBestTransferAirport(cityA, cityB, 1, 0.99*distAB, Airport)
-best2 = airports.findBestTransferAirport(cityA, cityB, 2, 0.99*distAB, Airport)
-best3 = airports.findBestTransferAirport(cityA, cityB, 3, 0.99*distAB, Airport)
-bestReal1 = airports.findBestTransferAirport(cityA, cityB, 1, 1150, Airport)
-bestReal2 = airports.findBestTransferAirport(cityA, cityB, 2, 2300, Airport)
-bestReal3 = airports.findBestTransferAirport(cityA, cityB, 3, 3576, Airport)
+best1 = router.findBestTransferAirport(cityA, cityB, 1, 0.99*distAB, Airport)
+best2 = router.findBestTransferAirport(cityA, cityB, 2, 0.99*distAB, Airport)
+best3 = router.findBestTransferAirport(cityA, cityB, 3, 0.99*distAB, Airport)
+bestReal1 = router.findBestTransferAirport(cityA, cityB, 1, 1150, Airport)
+bestReal2 = router.findBestTransferAirport(cityA, cityB, 2, 2300, Airport)
+bestReal3 = router.findBestTransferAirport(cityA, cityB, 3, 3576, Airport)
 
-ANCtoYWG = airports.findBestTransferAirport('Anchorage', 'Winnipeg', 1, 1150, str)
+ANCtoYWG = router.findBestTransferAirport('Anchorage', 'Winnipeg', 1, 1150, str)
 print( ANCtoYWG )
 
 print( "The midpoint between " + cityA + " and " + cityB + \
@@ -99,7 +101,7 @@ for p in pairs:
     cumRange = 0
     ii = 0
     print( airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName() )
-    bestRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
+    bestRoute = router.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
     for sr in bestRoute :
         if ii > 0:
             cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
@@ -118,7 +120,7 @@ for p in pairs2:
     cumRange = 0
     ii = 0
     print( airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName() )
-    bestRoute = airports.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 2, 2300)
+    bestRoute = router.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 2, 2300)
     for sr in bestRoute :
         if ii > 0:
             cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])

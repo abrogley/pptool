@@ -1,6 +1,7 @@
 test_list = [
     'UT_Airport.py',
-    'UT_AirportManager.py',    
+    'UT_AirportManager.py',
+    'UT_RouteManager.py',
     ]
 
 for item in test_list:
