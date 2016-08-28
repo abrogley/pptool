@@ -6,39 +6,6 @@ airportDatabase = getAirportList()
 airports = AirportManager(airportDatabase)
 airports.debugPrint = False
 
-myCity = airports.findByName('Houston')
-print( "My city's name is " + myCity.getCityName() + \
-      " and it is located at " + str(myCity.getLocX()) + \
-      " in X and " + str(myCity.getLocY()) + " in Y " )
-
-print( "The distance between my city and point [3000,5000] is " + \
-      str(airports.getDistanceBetween(myCity, [3000,5000])) )
-
-print( "To get anywhere from my city, there is a base fare of " + \
-      str(airports.baseFare) + " coins plus an extra " + \
-      str(airports.coinsPerUnitDistance) + " coins per unit distance." )
-
-print( "The distance between Detroit and Tokyo is " + \
-      str(airports.getDistanceBetween('Detroit','Tokyo')) )
-
-print( "The vector between Houston and Sao Paolo is " + \
-      str(airports.findVector('Houston','Sao Paolo')) )
-
-print( "The cost between Boston and Orlando is " + \
-      str(int(airports.getCostBetween('Boston','Orlando'))) )
-
-radius = 500
-withinRangeFromMyCity = airports.findAirportsWithinRange(myCity.getCityName(), radius)
-print( "There are some cities close to me. The ones within " + str(radius) + \
-      " distance are:" )
-for city in withinRangeFromMyCity :
-    print( "    " + city.getCityName() )
-
-sortedListWithinRangeAndClass2 = airports.findAirportsTowards(myCity, 'Seattle', radius, 2)
-print( "I can sort these cities by distance to Seattle and filter by class 2 and above:" )
-for city in sortedListWithinRangeAndClass2 :
-    print( "    " + city.getCityName() )
-
 #Purposely test different city input styles
 cityA = 'New York'
 cityB = 'Cairo'
@@ -162,3 +129,5 @@ for p in pairs2:
     print( "        Range on this route: " + str(cumRange) )
     print( "        Straight Line Range: " + str(perfectRange) )
     print( "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%" )
+
+print("Done!")

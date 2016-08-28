@@ -204,10 +204,11 @@ class AirportManager(object):
     If the two cities are within range of each other, the first Airport alphabetically by city name is returned.
     """
     def findBestTransferAirport(self, firstLoc, secondLoc, minClass=1, maxRange=100000, desiredType=str):
-        if type(firstLoc) is str :
-            firstLoc = self.findByName(firstLoc)
-        if type(firstLoc) is Airport :
-            firstLoc = firstLoc.getLoc()
+        locList = self.parseInputs([firstLoc, secondLoc])
+        if locList is int:
+            return locList
+        firstLoc = locList[0]
+        secondLoc = locList[1]
 
         leastExtraRangeSoFar = 1000000
         bestIndexSoFar = -5

@@ -154,3 +154,19 @@ class AirportManagerTestCase(unittest.TestCase):
         list3 = self.am.findAirportsWithinRange([0,0], 800)
         assert len(list3) == 0
         
+    def testFindAirportsTowards(self):
+        sortedList1 = self.am.findAirportsTowards(self.houston, 'Yellowknife', 400)
+        assert sortedList1[0].getCityName() == 'Kansas City'
+        assert sortedList1[-1].getCityName() == 'Oaxaca'
+        assert len(sortedList1) == 11
+        
+        sortedList2 = self.am.findAirportsTowards(self.houston, 'Yellowknife', 500, 2)
+        assert sortedList2[0].getCityName() == 'Phoenix'
+        assert sortedList2[-1].getCityName() == 'Guatemala'
+        assert len(sortedList2) == 8
+        
+        sortedList3 = self.am.findAirportsTowards('Yellowknife', self.houston, 600)
+        assert sortedList3[0].getCityName() == 'Saskatoon'
+        assert sortedList3[-1].getCityName() == 'Yellowknife'
+        assert len(sortedList3) == 4
+        
