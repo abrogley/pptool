@@ -1,7 +1,12 @@
-exec(open('test/UT_Airport.py').read())
-exec(open('test/UT_AirportManager.py').read())
-        
+test_list = [
+    'UT_Airport.py',
+    'UT_AirportManager.py',    
+    ]
 
-# This runs ALL the above tests
+for item in test_list:
+    test_item = 'test/' + item
+    exec(open( test_item ).read())
+
+# This runs ALL the tests in test_list
 if __name__ == "__main__":
     unittest.main() # run all tests

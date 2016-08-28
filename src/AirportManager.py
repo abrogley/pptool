@@ -15,7 +15,7 @@ class AirportManager(object):
         for ap in self.airports:
             if searchString == ap.getCityName() :
                 return ap
-        #print "Could not find city named " + searchString + "."
+        #print( "Could not find city named " + searchString + "." )
         return ""
 
     """
@@ -49,7 +49,7 @@ class AirportManager(object):
             elif len(inputs) == 0:
                 # There needs to be some kind of input in the list
                 if self.debugPrint:
-                    print inputs
+                    print( inputs )
                 return -4
 
         # Similarly, let's encapsulate a single string or single Airport as a list.
@@ -60,7 +60,7 @@ class AirportManager(object):
         if type(inputs) is not list :
             # Type error. List expected
             if self.debugPrint:
-                print inputs
+                print( inputs )
             return -3
 
         for item in inputs:
@@ -70,7 +70,7 @@ class AirportManager(object):
             if type(item) not in [list, str, Airport]:
                 # Type error of input item in list
                 if self.debugPrint:
-                    print inputs
+                    print( inputs )
                 return -2
 
             # First, find the Airport by string name if needed
@@ -79,7 +79,7 @@ class AirportManager(object):
                 if item == "":
                     # Could not find a city by the string name in item
                     if self.debugPrint:
-                        print inputs
+                        print( inputs )
                     return -1
 
             # Then, get the location of the Airport.
@@ -143,8 +143,8 @@ class AirportManager(object):
     def getMidpointBetween(self, firstLoc, secondLoc, numDivisions=2):
         locList = self.parseInputs([firstLoc, secondLoc])
         if locList < 0:
-            print "firstLoc is of type " + type(firstLoc)
-            print "secondLoc is of type " + type(secondLoc)
+            print( "firstLoc is of type " + type(firstLoc) )
+            print( "secondLoc is of type " + type(secondLoc) )
             return locList
         firstLoc = locList[0]
         secondLoc = locList[1]
@@ -335,9 +335,9 @@ class AirportManager(object):
                 betterNplus1 = self.findBestTransferAirport(airportN, airportNplus2, minClass, maxRange, Airport)
                 if airportNplus1 is not betterNplus1 :
                     if debugOn:
-                       print "      Found a better route!"
-                       print "         instead of " + airportN.getCityName() + "->" + airportNplus1.getCityName() + "->" + airportNplus2.getCityName()
-                       print "         there is " + airportN.getCityName() + "->" + betterNplus1.getCityName() + "->" + airportNplus2.getCityName()
+                       print( "      Found a better route!" )
+                       print( "         instead of " + airportN.getCityName() + "->" + airportNplus1.getCityName() + "->" + airportNplus2.getCityName() )
+                       print( "         there is " + airportN.getCityName() + "->" + betterNplus1.getCityName() + "->" + airportNplus2.getCityName() )
                     pathway[ii+1] = betterNplus1
                 ii += 1
 
@@ -349,12 +349,12 @@ class AirportManager(object):
                     extraText = ""
                     inWhileLoop = False or inWhileLoop
                 if debugOn:
-                    print "      " + previousPathway[kk].getCityName() + "     " + pathway[kk].getCityName() + extraText
+                    print( "      " + previousPathway[kk].getCityName() + "     " + pathway[kk].getCityName() + extraText )
 
             previousPathway = list(pathway)
             jj += 1
             if not inWhileLoop and debugOn:
-                print "  Converged after " + str(jj) + " iterations."
+                print( "  Converged after " + str(jj) + " iterations." )
 
         # Remove duplicates before returning value
         pathway = self.removeDuplicates(pathway)
@@ -382,7 +382,7 @@ class AirportManager(object):
         # The path length will increase during this method, so grab initial length.
         pathLength = len(pathway)
         #for cc in pathway:
-        #    print cc.getCityName()
+        #    print( cc.getCityName() )
 
         # Start from the end of the list to avoid indexing errors
         for ii in range(pathLength-2, 0, -1):
@@ -392,7 +392,7 @@ class AirportManager(object):
             midpoints = self.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
             for mp in midpoints :
                 if mp < 0 :
-                    print "ERROR: Problem in finding midpoints"
+                    print( "ERROR: Problem in finding midpoints" )
                     
             # Find closest cities to these midpoints
             midpointAirports = []
