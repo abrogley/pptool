@@ -126,4 +126,3 @@ class RouteManagerTestCase(unittest.TestCase):
             routeEfficiency = perfectRange/cumRange
             assert routeEfficiency >= self.aeroeaglePairEfficiencies[pairIter]
             pairIter += 1
-        
