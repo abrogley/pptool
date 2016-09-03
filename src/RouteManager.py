@@ -172,7 +172,7 @@ class RouteManager(object):
             # FIXME: 4 midpoints is needed for severe cases like Honolulu to Easter Island
             midpoints = self.am.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
             for mp in midpoints :
-                if mp < 0 :
+                if mp is int :
                     print( "ERROR: Problem in finding midpoints" )
                     
             # Find closest cities to these midpoints
