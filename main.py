@@ -8,9 +8,11 @@ airports = AirportManager(airportDatabase)
 router = RouteManager(airports)
 airports.debugPrint = False
 
+
+'''
 print( "Try to determine the best route between the following city pairs using an upgraded Mohawk." )
 
-pairs = [ \
+pairs = [
     [20,188],
     [0,1],
     [2,3],
@@ -33,10 +35,10 @@ for p in pairs:
         print( "    " + sr.getCityName() )
         ii += 1
     perfectRange = airports.getDistanceBetween(bestRoute[0], bestRoute[-1])
-    rangePct = (cumRange/perfectRange-1)*100
+    routeEfficiency = (perfectRange/cumRange)
     print( "        Range on this route: " + str(cumRange) )
     print( "        Straight Line Range: " + str(perfectRange) )
-    print( "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%" )
+    print( "        Route efficiency: " + str(routeEfficiency) )
 
 print( "Try to determine the best route between the following city pairs using an upgraded Aeroeagle." )
 pairs2 = [[32,18], [90,219], [84,204], [156,67]]
@@ -52,9 +54,10 @@ for p in pairs2:
         print( "    " + sr.getCityName() )
         ii += 1
     perfectRange = airports.getDistanceBetween(bestRoute[0], bestRoute[-1])
-    rangePct = (cumRange/perfectRange-1)*100
+    routeEfficiency = (perfectRange/cumRange)
     print( "        Range on this route: " + str(cumRange) )
     print( "        Straight Line Range: " + str(perfectRange) )
-    print( "        Percentage increase: " + '{:2.2f}'.format(rangePct) + "%" )
+    print( "        Route efficiency: " + str(routeEfficiency) )
 
 print("Done!")
+'''

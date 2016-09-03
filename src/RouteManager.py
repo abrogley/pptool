@@ -178,7 +178,7 @@ class RouteManager(object):
             # Find closest cities to these midpoints
             midpointAirports = []
             for mp in midpoints:
-                nearestToMp = airports.findNearestAirport([mp], minClass, Airport)
+                nearestToMp = self.am.findNearestAirport([mp], minClass, Airport)
                 if nearestToMp is not int :
                     midpointAirports.append(nearestToMp)
             # Remove city ii and insert midpoing list between the city ii and ii+1
