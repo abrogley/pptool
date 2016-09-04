@@ -2,10 +2,10 @@
 def getMyAirportList() :
     return [
         'Aden',
-        'Al Fashir',
         'Algiers',
         'Atlanta',
         'Baghdad',
+        'Bangkok'
         'Bangalore',
         'Barcelona',
         'Beijing',
