@@ -5,7 +5,7 @@ def getMyAirportList() :
         'Algiers',
         'Atlanta',
         'Baghdad',
-        'Bangkok'
+        'Bangkok',
         'Bangalore',
         'Barcelona',
         'Beijing',
@@ -89,5 +89,5 @@ def getMyAirportList() :
         'Volgograd',
         'Washington D.C.',
         'Xi\'an',
-        'Xining',
+        'Xining'
         ]
