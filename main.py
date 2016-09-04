@@ -1,34 +1,36 @@
 exec(open("src/AirportDatabase.py").read())
+exec(open("src/AirportSubset.py").read())
 exec(open("src/AirportManager.py").read())
 exec(open("src/RouteManager.py").read())
+
+import random
 
 # Simple tests
 airportDatabase = getAirportList()
 airports = AirportManager(airportDatabase)
+
+myAirportStrings = getMyAirportList()
+myDatabase = []
+for airportString in myAirportStrings :
+    myDatabase.append(airports.findByName(airportString))
+    
 router = RouteManager(airports)
 airports.debugPrint = False
 
+# Get two pseudorandom integers from 0-88 inclusive.
+random.seed('We will not surrender our country to the false song of globalism.')
 
-'''
+pairs = []
+    pairs.append(random.sample(myDatabase, 2))
+
 print( "Try to determine the best route between the following city pairs using an upgraded Mohawk." )
 
-pairs = [
-    [20,188],
-    [0,1],
-    [2,3],
-    [4,5],
-    [6,7],
-    [8,7],
-    [34,50],
-    [162,240],
-    [90,71]
-    ]
-
+pairIter = 0
 for p in pairs:
     cumRange = 0
     ii = 0
-    print( airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName() )
-    bestRoute = router.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 1, 1150)
+    print( p[0].getCityName() + " and " + p[1].getCityName() )
+    bestRoute = router.findBestRouteBetween(p[0], p[1], 1, 1150)
     for sr in bestRoute :
         if ii > 0:
             cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
@@ -39,15 +41,16 @@ for p in pairs:
     print( "        Range on this route: " + str(cumRange) )
     print( "        Straight Line Range: " + str(perfectRange) )
     print( "        Route efficiency: " + str(routeEfficiency) )
-
+    pairIter += 1
+'''
 print( "Try to determine the best route between the following city pairs using an upgraded Aeroeagle." )
 pairs2 = [[32,18], [90,219], [84,204], [156,67]]
 
 for p in pairs2:
     cumRange = 0
     ii = 0
-    print( airportDatabase[p[0]].getCityName() + " and " + airportDatabase[p[1]].getCityName() )
-    bestRoute = router.findBestRouteBetween(airportDatabase[p[0]], airportDatabase[p[1]], 2, 2300)
+    print( p[0].getCityName() + " and " + p[1].getCityName() )
+    bestRoute = router.findBestRouteBetween(p[0], p[1], 2, 2300)
     for sr in bestRoute :
         if ii > 0:
             cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
@@ -59,5 +62,5 @@ for p in pairs2:
     print( "        Straight Line Range: " + str(perfectRange) )
     print( "        Route efficiency: " + str(routeEfficiency) )
 
-print("Done!")
 '''
+print("Done!")
