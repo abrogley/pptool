@@ -14,6 +14,7 @@ myDatabase = []
 for airportString in myAirportStrings :
     myDatabase.append(airports.findByName(airportString))
     
+airports = AirportManager(myDatabase)
 router = RouteManager(airports)
 airports.debugPrint = False
 
@@ -21,6 +22,7 @@ airports.debugPrint = False
 random.seed('We will not surrender our country to the false song of globalism.')
 
 pairs = []
+for ii in xrange(1000) :
     pairs.append(random.sample(myDatabase, 2))
 
 print( "Try to determine the best route between the following city pairs using an upgraded Mohawk." )
@@ -31,6 +33,9 @@ for p in pairs:
     ii = 0
     print( p[0].getCityName() + " and " + p[1].getCityName() )
     bestRoute = router.findBestRouteBetween(p[0], p[1], 1, 1150)
+    if bestRoute == [] :
+        print( "    No route found between " + p[0].getCityName() + " and " + p[1].getCityName())
+        continue
     for sr in bestRoute :
         if ii > 0:
             cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
@@ -42,6 +47,7 @@ for p in pairs:
     print( "        Straight Line Range: " + str(perfectRange) )
     print( "        Route efficiency: " + str(routeEfficiency) )
     pairIter += 1
+
 '''
 print( "Try to determine the best route between the following city pairs using an upgraded Aeroeagle." )
 pairs2 = [[32,18], [90,219], [84,204], [156,67]]

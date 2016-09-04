@@ -16,7 +16,7 @@ class RouteManager(object):
     """
     def findBestTransferAirport(self, firstLoc, secondLoc, minClass=1, maxRange=100000, desiredType=str):
         locList = self.am.parseInputs([firstLoc, secondLoc])
-        if locList is int:
+        if type(locList) is int:
             return locList
         firstLoc = locList[0]
         secondLoc = locList[1]
@@ -85,9 +85,9 @@ class RouteManager(object):
                         pathway.append(citiesToCheck[jj])
                         inWhileLoop = False
                     else :
-                        if jj >= len(citiesToCheck):
+                        if jj >= len(citiesToCheck) - 1:
                             inWhileLoop = False
-                            continue
+                            return -6
                         jj += 1
 
                 #If we hit our target destination, we're done.
@@ -172,7 +172,7 @@ class RouteManager(object):
             # FIXME: 4 midpoints is needed for severe cases like Honolulu to Easter Island
             midpoints = self.am.getMidpointBetween(pathway[ii-1], pathway[ii+1], 4)
             for mp in midpoints :
-                if mp is int :
+                if type(mp) is int :
                     print( "ERROR: Problem in finding midpoints" )
                     
             # Find closest cities to these midpoints
@@ -194,6 +194,9 @@ class RouteManager(object):
     def findBestRouteBetween(self, firstLoc, secondLoc, minClass=1, maxRange=100000):
         # First get a viable path given range and class constraints.
         pathway = self.findARouteBetween(firstLoc, secondLoc, minClass, maxRange)
+        
+        if pathway < 0 :
+            return []
         
         # Throw in more intermediate cities
         if len(pathway) > 2:
