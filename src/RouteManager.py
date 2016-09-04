@@ -195,7 +195,7 @@ class RouteManager(object):
         # First get a viable path given range and class constraints.
         pathway = self.findARouteBetween(firstLoc, secondLoc, minClass, maxRange)
         
-        if pathway < 0 :
+        if type(pathway) is int :
             return []
         
         # Throw in more intermediate cities
