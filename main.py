@@ -5,52 +5,67 @@ exec(open("src/RouteManager.py").read())
 exec(open("src/weightedChoice.py").read())
 
 import random
+from operator import itemgetter
 
 # Setup
 airportDatabase = getAirportList()
 airports = AirportManager(airportDatabase)
 
 myAirportStrings = getMyAirportList()
+
+# Uncomment here to check all cities, not just currently owned ones.
+#myAirportStrings = [c.getCityName() for c in airportDatabase]
+
 myDatabase = []
 myWeightedDatabase = []
+myCityFrequency = []
 for airportString in myAirportStrings :
     currentAirport = airports.findByName(airportString)
     currentClass = currentAirport.getClass()
     myDatabase.append(currentAirport)
     myWeightedDatabase.append([currentAirport, currentClass-.6])
+    myCityFrequency.append([airportString, 0])
     
-airports = AirportManager(myDatabase)
-router = RouteManager(airports)
-airports.debugPrint = False
 
-# Get weighted random numbers
-random.seed('We will not surrender our country to the false song of globalism.')
+myAirports = AirportManager(myDatabase)
+router = RouteManager(myAirports)
+myAirports.debugPrint = False
+
+# Make random numbers great again.
+random.seed('We will not surrender our country or its people to the false song of globalism.')
 
 pairs = []
-for ii in xrange(100) :
+for ii in xrange(500) :
     pairs.append(weightedPair(myWeightedDatabase))
-
-print( "Try to determine the best route between the following city pairs using an upgraded Mohawk." )
 
 pairIter = 0
 for p in pairs:
     cumRange = 0
     ii = 0
-    print( p[0].getCityName() + " and " + p[1].getCityName() )
     bestRoute = router.findBestRouteBetween(p[0], p[1], 1, 1150)
     if bestRoute == [] :
-        print( "    No route found between " + p[0].getCityName() + " and " + p[1].getCityName())
         continue
     for sr in bestRoute :
         if ii > 0:
-            cumRange += airports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
-        print( "    " + sr.getCityName() )
+            cumRange += myAirports.getDistanceBetween(bestRoute[ii-1], bestRoute[ii])
         ii += 1
-    perfectRange = airports.getDistanceBetween(bestRoute[0], bestRoute[-1])
+    perfectRange = myAirports.getDistanceBetween(bestRoute[0], bestRoute[-1])
     routeEfficiency = (perfectRange/cumRange)
-    print( "        Range on this route: " + str(cumRange) )
-    print( "        Straight Line Range: " + str(perfectRange) )
-    print( "        Route efficiency: " + str(routeEfficiency) )
+    
+    # Save off intermediate cities
+    if len(bestRoute) > 2 :
+        transferCities = [br.getCityName() for br in bestRoute]
+        for ii in xrange(len(myCityFrequency)):
+            if myCityFrequency[ii][0] in transferCities :
+                myCityFrequency[ii][1] += 1
     pairIter += 1
 
+#print myCityFrequency
+sortedFrequency = sorted(myCityFrequency, key=itemgetter(1), reverse=True)
+print("10 Most common transfer cities")
+for sf in sortedFrequency[:10] :
+    print(sf)
+print("10 Least common transfer cities")
+for sf in sortedFrequency[-10:] :
+    print(sf)
 print("Done!")

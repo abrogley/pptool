@@ -24,11 +24,11 @@ def weightedPair(choicesInput):
     ii = 0
     for c, w in choices:
         if c == first :
-            print("First choice was " + c.getCityName() + ", removing it for Second choice.")
+            #print("First choice was " + c.getCityName() + ", removing it for Second choice.")
             choices.pop(ii)
         ii += 1
-    print("New array length: " + str(len(choices)))
+    #print("New array length: " + str(len(choices)))
     # Select a new choice
     second = weightedChoice(choices)
-    print("   Second choice was " + second.getCityName())
+    #print("   Second choice was " + second.getCityName())
     return [first, second]
