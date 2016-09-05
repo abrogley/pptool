@@ -34,9 +34,16 @@ myAirports.debugPrint = False
 # Make random numbers great again.
 random.seed('We will not surrender our country or its people to the false song of globalism.')
 
+'''
 pairs = []
 for ii in xrange(500) :
     pairs.append(weightedPair(myWeightedDatabase))
+'''
+     
+pairs = []
+for ii in xrange(1,len(myDatabase)) :
+    for jj in xrange(ii) :
+        pairs.append([myDatabase[ii],myDatabase[jj]])
 
 pairIter = 0
 for p in pairs:
